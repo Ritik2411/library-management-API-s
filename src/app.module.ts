@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BookModule } from './Book/Book.module';
@@ -7,6 +7,8 @@ import { BookEntity } from './Book/Context/Book.entity';
 import { AuthenticationModule } from './Authentication/Authentication.module';
 import { AuthenticationEntity } from './Authentication/Context/Authentication.entity';
 import { ConfigModule } from '@nestjs/config';
+import { JwtAuthMiddleware } from './Middlewares/Jwt.middleware';
+import { BookController } from './Book/Book.controller';
 
 @Module({
   imports: [
@@ -28,4 +30,8 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtAuthMiddleware).forRoutes(BookController);
+  }
+}

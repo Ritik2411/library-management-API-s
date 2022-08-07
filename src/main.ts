@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const swaggerConfig = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Library Management API')
     .setDescription('These are all endpoints for Library Management')
     .setVersion('1.0')

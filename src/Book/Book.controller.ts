@@ -9,13 +9,14 @@ import {
   Put,
   Res,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 import { BookService } from './Book.service';
 import { BookDto } from './Dto/Book.dto';
 import { PatchDto } from './Dto/Patch.dto';
 
 @ApiTags('books')
+@ApiBearerAuth()
 @Controller('books')
 export class BookController {
   constructor(private bookSerice: BookService) {}

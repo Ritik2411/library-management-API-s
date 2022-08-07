@@ -3,7 +3,7 @@ import { Register } from './Interface/Register.interface';
 import * as bcrypt from 'bcrypt';
 import { AuthenticationEntity } from './Context/Authentication.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Login } from './Interface/Login.interface';
 
 @Injectable()
@@ -14,6 +14,10 @@ export class AuthenticationService {
   ) {}
 
   private saltRounds: number = 10;
+
+  async getAllUsers(): Promise<AuthenticationEntity[]> {
+    return await this.authenticationRepository.find();
+  }
 
   async register(data: Register): Promise<AuthenticationEntity> {
     return bcrypt
@@ -37,6 +41,25 @@ export class AuthenticationService {
       where: {
         email: login.email,
       },
+    });
+  }
+
+  async getByEmail(data: any): Promise<AuthenticationEntity> {
+    const user = await this.authenticationRepository.findOne({
+      where: {
+        email: data.email,
+      },
+    });
+
+    return user;
+  }
+
+  async resetPassword(
+    user: AuthenticationEntity,
+    hash: string
+  ): Promise<UpdateResult> {
+    return await this.authenticationRepository.update(user.id, {
+      password: hash,
     });
   }
 }
