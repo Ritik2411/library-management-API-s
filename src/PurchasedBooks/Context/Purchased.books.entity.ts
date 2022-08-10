@@ -9,5 +9,14 @@ export class PurchasedBooksEntity {
   quantity: number;
 
   @Column({ type: 'int', width: 5, nullable: false })
-  totalPrice: number;
+  price: number;
+
+  @Column({ type: 'varchar', width: 255, nullable: false })
+  name: string;
+
+  @Column({ type: 'varchar', width: 255, nullable: false })
+  userId: string;
+
+  @Column({ type: 'varchar', width: 255, nullable: false })
+  bookId: string;
 }

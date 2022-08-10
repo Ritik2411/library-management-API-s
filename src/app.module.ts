@@ -12,24 +12,29 @@ import { BookController } from './Book/Book.controller';
 import { AddressModule } from './Address/Address.module';
 import { AddressEntity } from './Address/Context/Address.context';
 import { AddressController } from './Address/Address.controller';
+import { PurchasedBookModule } from './PurchasedBooks/Purchased.books.module';
+import { PurchasedBooksEntity } from './PurchasedBooks/Context/Purchased.books.entity';
+import { PurchasedBooksController } from './PurchasedBooks/Purchased.books.controller';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'ritik2411',
-      database: 'book',
-      entities: [BookEntity, AuthenticationEntity, AddressEntity],
+      type: 'postgres',
+      url: 'postgres://gsgzxmax:9Bs4JfEpUVOxXa9vleTrxppJxWtu2JZa@kandula.db.elephantsql.com/gsgzxmax',
+      entities: [
+        BookEntity,
+        AuthenticationEntity,
+        AddressEntity,
+        PurchasedBooksEntity,
+      ],
       logging: true,
       synchronize: false,
     }),
     BookModule,
     AuthenticationModule,
     AddressModule,
+    PurchasedBookModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -38,6 +43,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(JwtAuthMiddleware)
-      .forRoutes(BookController, AddressController);
+      .forRoutes(BookController, AddressController, PurchasedBooksController);
   }
 }
